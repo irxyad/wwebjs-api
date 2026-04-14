@@ -26,6 +26,9 @@ const autoStartSessions = process.env.AUTO_START_SESSIONS ? (process.env.AUTO_ST
 const basePath = process.env.BASE_PATH || '/'
 const trustProxy = process.env.TRUST_PROXY ? (process.env.TRUST_PROXY).toLowerCase() === 'true' : false
 
+const authUsername = process.env.AUTH_USERNAME || null
+const authPassword = process.env.AUTH_PASSWORD || null
+
 module.exports = {
   servicePort,
   sessionFolderPath,
@@ -49,5 +52,8 @@ module.exports = {
   enableWebSocket,
   autoStartSessions,
   basePath,
-  trustProxy
+  trustProxy,
+
+  authUsername,
+  authPassword
 }

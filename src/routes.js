@@ -14,6 +14,17 @@ const messageController = require('./controllers/messageController')
 const contactController = require('./controllers/contactController')
 const channelController = require('./controllers/channelController')
 
+const authController = require('./external/controllers/authController')
+
+/**
+ * ================
+ * EKSTERNAL ENDPOINTS
+ * ================
+ */
+
+// API endpoint for login
+routes.use('/login', authController.login)
+
 /**
  * ================
  * HEALTH ENDPOINTS

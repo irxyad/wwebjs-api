@@ -2,6 +2,12 @@ const qr = require('qr-image')
 const { setupSession, deleteSession, reloadSession, validateSession, flushSessions, destroySession, sessions } = require('../sessions')
 const { sendErrorResponse, waitForNestedObject, exposeFunctionIfAbsent } = require('../utils')
 const { logger } = require('../logger')
+const fs = require('fs/promises')
+const fsSync = require('fs')
+
+const {
+  sessionFolderPath
+} = require('../config')
 
 /**
  * Starts a session for the given session ID.
@@ -402,7 +408,27 @@ const getSessions = async (req, res) => {
       }
     }
   */
-  return res.json({ success: true, result: Array.from(sessions.keys()) })
+
+  const rawSessions = []
+
+  if (!fsSync.existsSync(sessionFolderPath)) {
+    fsSync.mkdirSync(sessionFolderPath)
+  }
+
+  const files = await fs.readdir(sessionFolderPath)
+
+  for (const file of files) {
+    const match = file.match(/^session-(.+)$/)
+    if (match) {
+      rawSessions.push(match[1])
+    }
+  }
+
+  return res.json({
+    success: true,
+    result: Array.from(sessions.keys()),
+    raw: rawSessions // artinya semua session walaupun blm di initiating
+  })
 }
 
 /**

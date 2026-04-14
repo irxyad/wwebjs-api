@@ -3,6 +3,7 @@ const qrcode = require('qrcode-terminal')
 const { sessionFolderPath } = require('../config')
 const { sendErrorResponse } = require('../utils')
 const { logger } = require('../logger')
+const { log } = require('console')
 
 /**
  * Responds to request with 'pong'
@@ -63,8 +64,9 @@ const localCallbackExample = async (req, res) => {
     }
   */
   try {
-    const { dataType, data } = req.body
-    if (dataType === 'qr') { qrcode.generate(data.qr, { small: true }) }
+    // const { dataType, data } = req.body
+    // log(data.qr)
+    // if (dataType === 'qr') { qrcode.generate(data.qr, { small: true }) }
     await fsp.mkdir(sessionFolderPath, { recursive: true })
     await fsp.writeFile(`${sessionFolderPath}/message_log.txt`, `${JSON.stringify(req.body)}\r\n`, { flag: 'a+' })
     res.json({ success: true })
